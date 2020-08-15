@@ -113,8 +113,8 @@ DEPENDENCIES
   openapi_client (~> 1.0.0)!
   rake (~> 12.0)
   rspec (~> 3.0)
-  standalone_migrations
-  vcr
+  standalone_migrations (~> 6.0)
+  vcr (~> 6.0)
 
 BUNDLED WITH
    2.1.4

@@ -1,11 +1,10 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 # Specify your gem's dependencies in cran_crawler.gemspec
 gemspec
 
-gem "rake", "~> 12.0"
-gem "rspec", "~> 3.0"
-gem 'openapi_client', '~> 1.0.0', path: "./openapi"
-gem 'standalone_migrations'
-gem 'vcr'
-
+gem 'openapi_client', '~> 1.0.0', path: './openapi'
+gem 'rake', '~> 12.0'
+gem 'rspec', '~> 3.0'
+gem 'standalone_migrations', '~> 6.0'
+gem 'vcr', '~> 6.0'
