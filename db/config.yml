@@ -1,0 +1,14 @@
+default: &default
+  adapter: postgresql
+  host: localhost
+  username: user
+  password: password
+  pool: 5
+
+development:
+  <<: *default
+  database: development
+
+test:
+  <<: *default
+  database: test

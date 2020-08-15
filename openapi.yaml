@@ -1,0 +1,40 @@
+openapi: 3.0.3
+info:
+  title: CRAN
+  version: 1.0.0
+servers:
+  - url: http://cran.r-project.org/src/contrib
+paths:
+  /PACKAGES.gz:
+    get:
+      operationId: getAllPackages
+      responses:
+        '200':
+          description: The list of packages
+          content:
+            application/gzip:
+              schema:
+                type: string
+                format: binary
+  /{name}_{version}.tar.gz:
+    get:
+      operationId: getPackageDetails
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The package details
+          content:
+            application/gzip:
+              schema:
+                type: string
+                format: binary
