@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rspec'
 
 RSpec.describe Crawler do
-  it 'gets all packages' do
+  it 'retrieves all packages' do
     VCR.use_cassette('packages') do
       crawler = Crawler.new
-      result = crawler.get_all_packages
+      result = crawler.retrieve_all_packages
       expected = { 'Depends' => 'R (>= 2.15.0), xtable, pbapply',
                    'License' => 'GPL (>= 2)',
                    'Md5sum' => '027ebdd8affce8f0effaecfcd5f5ade2',
@@ -18,10 +20,10 @@ RSpec.describe Crawler do
     end
   end
 
-  it 'gets package details' do
+  it 'retrieves package details' do
     VCR.use_cassette('package') do
       crawler = Crawler.new
-      result = crawler.get_package_details('A3', '1.0.0')
+      result = crawler.retrieve_package_details('A3', '1.0.0')
       expected = { 'Package' => 'A3',
                    'Type' => 'Package',
                    'Title' => "Accurate, Adaptable, and Accessible Error Metrics for Predictive\n       Models\n",

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cran_crawler/version'
 require 'thor'
 require 'active_record'

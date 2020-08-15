@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 require 'cran_crawler'
 require 'typhoeus'
@@ -7,9 +9,6 @@ VCR.configure do |c|
   c.cassette_library_dir = 'spec/cassettes'
   c.hook_into :typhoeus
   c.configure_rspec_metadata!
-  c.preserve_exact_body_bytes do |http_message|
-    http_message.body.encoding.name == 'UTF-8'
-  end
 end
 
 RSpec.configure do |config|
