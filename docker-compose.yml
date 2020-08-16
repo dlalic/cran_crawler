@@ -1,15 +1,9 @@
 version: '3'
 services:
-  db:
-    image: postgres
-    volumes:
-      - ./tmp/db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: password
   app:
     build: .
-    command: bash -c "bundle exec bin/console start"
+    env_file:
+      - .env
+    command: bundle exec bin/console start $OUTPUT
     volumes:
       - .:/myapp
-    depends_on:
-      - db
