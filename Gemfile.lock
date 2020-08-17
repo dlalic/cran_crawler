@@ -6,7 +6,7 @@ PATH
       activerecord-import
       deb822
       pg
-      semverse
+      semantic
       thor
 
 PATH
@@ -137,7 +137,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.3)
-    semverse (3.0.0)
+    semantic (1.6.1)
     standalone_migrations (6.0.0)
       activerecord (>= 4.2.7, < 6.1.0, != 5.2.3.rc1, != 5.2.3)
       railties (>= 4.2.7, < 6.1.0, != 5.2.3.rc1, != 5.2.3)

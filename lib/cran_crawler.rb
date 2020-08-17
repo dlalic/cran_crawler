@@ -16,8 +16,11 @@ module CranCrawler
       crawler = Crawler.new
       packages = crawler.retrieve_all_packages
       store = Store.new
-      results = store.persist_packages(packages)
-      results
+      store.persist_packages(packages)
+      packages.each do |package|
+        package_details = crawler.retrieve_package_details(package.fetch('Package'), package.fetch('Version'))
+        store.persist_package(package_details.first)
+      end
     end
   end
 end
