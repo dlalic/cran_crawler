@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in cran_crawler.gemspec
 gemspec
 
-gem 'cucumber'
+gem 'cucumber', '~> 4.1'
 gem 'openapi_client', '~> 1.0.0', path: './openapi'
 gem 'rake', '~> 12.0'
 gem 'rspec', '~> 3.0'

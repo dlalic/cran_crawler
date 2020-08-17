@@ -29,20 +29,19 @@ class Crawler
       parse_deb822(f)
     end
   rescue OpenapiClient::ApiError => e
-    @logger.error "Exception when calling get_all_packages: #{e}"
+    @logger.error "Exception when calling get_package_details: #{e}"
   end
 
   private
 
   def unpack_gz(file)
-    Zlib::GzipReader.open(file, &:read)
+    Zlib::GzipReader.new(file)
   rescue Zlib::Error => e
     @logger.error "Exception unpacking .gz: #{e}"
   end
 
   def unpack_tar_gz(file, destination)
-    # TODO: reuse unpack_gz
-    Minitar.unpack(Zlib::GzipReader.new(file), destination)
+    Minitar.unpack(unpack_gz(file), destination)
   rescue Minitar::Error => e
     @logger.error "Exception unpacking .tar: #{e}"
   end

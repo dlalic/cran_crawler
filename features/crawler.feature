@@ -1,7 +1,7 @@
 Feature: Crawler
   In order to look for new packages
   As a member of R community
-  I want to be to have a up-to-date list of CRAN packages
+  I want to have an up-to-date list of CRAN packages
 
   Scenario: A3 is present
     When I run "start foo.json"
