@@ -12,14 +12,6 @@ class Dependency < ActiveRecord::Base
     unresolved(package).update_all(unresolved_name: package.name, package_id: nil)
   end
 
-  def self.development
-    where(scope: 'development')
-  end
-
-  def self.runtime
-    where(scope: 'runtime')
-  end
-
   def name
     unresolved_name || package&.name
   end

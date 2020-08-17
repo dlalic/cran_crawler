@@ -16,7 +16,8 @@ module CranCrawler
       crawler = Crawler.new
       packages = crawler.retrieve_all_packages
       store = Store.new
-      store.persist_packages(packages)
+      results = store.persist_packages(packages)
+      results
     end
   end
 end

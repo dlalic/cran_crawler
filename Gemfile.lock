@@ -6,6 +6,7 @@ PATH
       activerecord-import
       deb822
       pg
+      semverse
       thor
 
 PATH
@@ -45,17 +46,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
-    aruba (1.0.2)
-      childprocess (>= 2.0, < 5.0)
-      contracts (~> 0.16.0)
-      cucumber (>= 2.4, < 5.0)
-      ffi (~> 1.9)
-      rspec-expectations (~> 3.4)
-      thor (~> 1.0)
     builder (3.2.4)
-    childprocess (4.0.0)
     concurrent-ruby (1.1.7)
-    contracts (0.16.0)
     crass (1.0.6)
     cucumber (4.1.0)
       builder (~> 3.2, >= 3.2.3)
@@ -88,11 +80,14 @@ GEM
       cucumber-core (~> 7.1, >= 7.1.0)
       cucumber-cucumber-expressions (~> 10.1, >= 10.1.0)
       cucumber-messages (~> 12.2, >= 12.2.0)
+    database_cleaner (1.8.5)
     deb822 (0.1.0)
     diff-lcs (1.3)
     erubi (1.9.0)
     ethon (0.12.0)
       ffi (>= 1.3.0)
+    factory_girl (4.9.0)
+      activesupport (>= 3.0.0)
     ffi (1.13.1)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
@@ -142,6 +137,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.3)
+    semverse (3.0.0)
     standalone_migrations (6.0.0)
       activerecord (>= 4.2.7, < 6.1.0, != 5.2.3.rc1, != 5.2.3)
       railties (>= 4.2.7, < 6.1.0, != 5.2.3.rc1, != 5.2.3)
@@ -161,14 +157,15 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aruba (~> 1.0)
   cran_crawler!
-  cucumber (~> 4.1)
+  cucumber
+  database_cleaner
+  factory_girl
   openapi_client (~> 1.0.0)!
   rake (~> 12.0)
   rspec (~> 3.0)
   standalone_migrations (~> 6.0)
-  vcr (~> 6.0)
+  vcr
 
 BUNDLED WITH
    2.1.4

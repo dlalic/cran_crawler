@@ -46,9 +46,10 @@ ActiveRecord::Schema.define(version: 20_200_817_110_239) do
   create_table 'packages', force: :cascade do |t|
     t.string 'name'
     t.string 'checksum'
+    t.boolean 'indexed', default: false, null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
-    t.index ['name'], name: 'index_packages_on_name'
+    t.index ['name'], name: 'index_packages_on_name', unique: true
   end
 
   create_table 'suggestions', force: :cascade do |t|
@@ -61,22 +62,24 @@ ActiveRecord::Schema.define(version: 20_200_817_110_239) do
   end
 
   create_table 'users', force: :cascade do |t|
-    t.string 'name'
-    t.text 'email'
+    t.string 'name', null: false
+    t.string 'email'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
+    t.index ['name'], name: 'index_users_on_name', unique: true
   end
 
   create_table 'versions', force: :cascade do |t|
     t.string 'number'
     t.string 'title'
-    t.string 'description'
-    t.string 'required_r_needed'
+    t.text 'description'
+    t.string 'r_version'
     t.string 'license'
     t.date 'published_at'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.bigint 'package_id'
+    t.index ['number'], name: 'index_versions_on_number', unique: true
     t.index ['package_id'], name: 'index_versions_on_package_id'
   end
 end

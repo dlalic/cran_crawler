@@ -25,5 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activerecord-import'
   spec.add_dependency 'deb822'
   spec.add_dependency 'pg'
+  spec.add_dependency 'semverse'
   spec.add_dependency 'thor'
 end

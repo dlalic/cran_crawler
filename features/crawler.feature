@@ -5,4 +5,8 @@ Feature: Crawler
 
   Scenario: A3 is present
     When I run the command line tool
-    Then the output should contain "A3"
+    Then the database contains these packages:
+      | NAME                  | CHECKSUM |
+      | Encounter at Farpoint | 1987 |
+      | The Nth Degree        | 1991 |
+      | All Good Things       | 1994 |
