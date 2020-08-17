@@ -4,5 +4,5 @@ Feature: Crawler
   I want to have an up-to-date list of CRAN packages
 
   Scenario: A3 is present
-    When I run "start foo.json"
+    When I run the command line tool
     Then the output should contain "A3"

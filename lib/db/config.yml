@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  host: localhost
+  username: user
+  password: password
+  pool: 5
+
+development:
+  database: db_dev
+  <<: *default
+
+test:
+  database: db_test
+  <<: *default
+
+production:
+  database: db_prod
+  <<: *default
+
+cucumber:
+  database: cucumber
+  <<: *default

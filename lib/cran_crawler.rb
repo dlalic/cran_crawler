@@ -3,14 +3,20 @@
 require 'cran_crawler/version'
 require 'thor'
 require 'cran_crawler/crawler'
+require 'active_record'
+require 'cran_crawler/store'
 
 module CranCrawler
   class Error < StandardError; end
   class CLI < Thor
-    desc 'start [OUTPUT]', 'Start with output file'
-    def start(output)
+    desc 'start [CONFIG]', 'Start with configuration'
+    def start(config)
+      yaml = YAML.load_file(config)
+      ActiveRecord::Base.establish_connection(yaml['development'])
       crawler = Crawler.new
-      # crawler.download_index
+      packages = crawler.retrieve_all_packages
+      store = Store.new
+      store.persist_packages(packages)
     end
   end
 end
