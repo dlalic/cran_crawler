@@ -23,6 +23,7 @@ class Store
   end
 
   def persist_package(package)
+    # TODO:
     # return if package.fetch('Type', :default_value) != 'Package'
     tokenizer = PackageInfoTokenizer.new(package['Depends'])
     package_info = tokenizer.process
@@ -31,14 +32,12 @@ class Store
     tokenizer = PackageInfoTokenizer.new(package['Suggests'])
     package_info = tokenizer.process
     persist_suggestions(package_info['packages'], version_id)
-    author = package.fetch('Author')
-    tokenizer = UserInfoTokenizer.new(author)
+    tokenizer = UserInfoTokenizer.new(package.fetch('Author'))
     tokenizer.process.each do |r|
       user_id = persist_user(r['name'], r['email'])
       persist_author(user_id, version_id)
     end
-    maintainer = package.fetch('Maintainer')
-    tokenizer = UserInfoTokenizer.new(maintainer)
+    tokenizer = UserInfoTokenizer.new(package.fetch('Maintainer'))
     tokenizer.process.each do |r|
       user_id = persist_user(r['name'], r['email'])
       persist_maintainer(user_id, version_id)
