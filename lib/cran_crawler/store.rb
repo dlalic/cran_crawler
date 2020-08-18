@@ -21,11 +21,11 @@ class Store
   end
 
   def persist_package(package)
-    return if package.fetch('Type') != 'Package'
+    # return if package.fetch('Type', :default_value) != 'Package'
 
     # TODO: extract this and support proper semver
     r_version = package['Depends'][/\(.*?\)/].tr('^0-9.', '')
-    version = Version.upsert(
+    version_id = Version.upsert(
       {
         number: package.fetch('Version'),
         title: package.fetch('Title'),
@@ -35,12 +35,40 @@ class Store
         published_at: package.fetch('Date/publication'),
         created_at: Time.now,
         updated_at: Time.now,
-        package: ...
-      }
+        package_id: Package.where(['name = ?', package.fetch('Package')]).first.id
+      }, returning: %w[id], unique_by: :index_versions_on_number_and_package_id
     )
     author = package.fetch('Author')
-    User.upsert({ name: author, version: version, created_at: Time.now, updated_at: Time.now })
+    author_id = User.upsert(
+      {
+        name: author,
+        created_at: Time.now,
+        updated_at: Time.now
+      }, returning: %w[id], unique_by: :index_users_on_name
+    )
+    Author.upsert(
+      {
+        user_id: author_id.first['id'],
+        version_id: version_id.first['id'],
+        created_at: Time.now,
+        updated_at: Time.now
+      }, unique_by: %i[user_id version_id]
+    )
     maintainer = package.fetch('Maintainer')
-    User.upsert({ name: maintainer, version: version, created_at: Time.now, updated_at: Time.now })
+    maintainer_id = User.upsert(
+      {
+        name: maintainer,
+        created_at: Time.now,
+        updated_at: Time.now
+      }, returning: %w[id], unique_by: :index_users_on_name
+    )
+    Maintainer.upsert(
+      {
+        user_id: maintainer_id.first['id'],
+        version_id: version_id.first['id'],
+        created_at: Time.now,
+        updated_at: Time.now
+      }, unique_by: %i[user_id version_id]
+    )
   end
 end
