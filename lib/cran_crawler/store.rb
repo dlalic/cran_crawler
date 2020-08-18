@@ -9,6 +9,7 @@ require 'cran_crawler/models/maintainer'
 require 'cran_crawler/models/dependency'
 require 'cran_crawler/models/suggestion'
 require 'cran_crawler/user_info_tokenizer'
+require 'cran_crawler/package_info_tokenizer'
 require 'semantic'
 
 class Store
@@ -23,7 +24,13 @@ class Store
 
   def persist_package(package)
     # return if package.fetch('Type', :default_value) != 'Package'
-    version_id = persist_version(package)
+    tokenizer = PackageInfoTokenizer.new(package['Depends'])
+    package_info = tokenizer.process
+    persist_dependencies(package_info['packages'])
+    version_id = persist_version(package_info['r_version'], package)
+    tokenizer = PackageInfoTokenizer.new(package['Suggests'])
+    package_info = tokenizer.process
+    persist_suggestions(package_info['packages'])
     author = package.fetch('Author')
     tokenizer = UserInfoTokenizer.new(author)
     tokenizer.process.each do |r|
@@ -40,8 +47,23 @@ class Store
 
   private
 
-  def persist_version(package)
-    r_version = package['Depends'][/\(.*?\)/].tr('^0-9.', '')
+  def persist_dependencies(packages)
+    packages = packages.map do |p|
+      { package_id: Package.where(['name = ?', p]).first.id,
+        updated_at: Time.now }
+    end
+    Dependency.upsert_all(packages, unique_by: :index_dependencies_on_package_id)
+  end
+
+  def persist_suggestions(packages)
+    packages = packages.map do |p|
+      { package_id: Package.where(['name = ?', p]).first.id,
+        updated_at: Time.now }
+    end
+    Suggestion.upsert_all(packages, unique_by: :index_suggestions_on_package_id)
+  end
+
+  def persist_version(r_version, package)
     Version.upsert(
       {
         number: package.fetch('Version'),

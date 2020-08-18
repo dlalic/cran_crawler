@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2020_08_17_110239) do
   create_table "dependencies", force: :cascade do |t|
     t.date "updated_at"
     t.bigint "package_id", null: false
-    t.index ["package_id"], name: "index_dependencies_on_package_id"
+    t.index ["package_id"], name: "index_dependencies_on_package_id", unique: true
   end
 
   create_table "maintainers", force: :cascade do |t|
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2020_08_17_110239) do
   create_table "suggestions", force: :cascade do |t|
     t.date "updated_at"
     t.bigint "package_id", null: false
-    t.index ["package_id"], name: "index_suggestions_on_package_id"
+    t.index ["package_id"], name: "index_suggestions_on_package_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
