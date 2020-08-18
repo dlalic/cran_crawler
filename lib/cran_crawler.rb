@@ -20,9 +20,12 @@ module CranCrawler
       packages.each_with_index do |package, index|
         break if ENV['CUCUMBER'] && index.positive?
 
-        # TODO: compare checksums
-        package_details = crawler.retrieve_package_details(package.fetch('Package'), package.fetch('Version'))
-        store.persist_package(package_details.first)
+        name = package.fetch('Package', :default_value)
+        version = package.fetch('Version', :default_value)
+        unless store.package_indexed?(name)
+          package_details = crawler.retrieve_package_details(name, version)
+          store.persist_package(package_details.first)
+        end
       end
     end
   end
