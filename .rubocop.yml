@@ -1,3 +1,4 @@
 AllCops:
   Exclude:
     - 'openapi/**/*'
+    - 'lib/db/schema.rb'

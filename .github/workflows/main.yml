@@ -40,5 +40,5 @@ jobs:
     - name: Run integration tests
       run: |
         rake db:create
-        rake db::migrate
+        rake db:migrate
         bundle exec cucumber
