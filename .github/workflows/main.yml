@@ -38,4 +38,7 @@ jobs:
     - name: Run tests
       run: bundle exec rake
     - name: Run integration tests
-      run: bundle exec cucumber
+      run: |
+        rake db:create
+        rake db::migrate
+        bundle exec cucumber
