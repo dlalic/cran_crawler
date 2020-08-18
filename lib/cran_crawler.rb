@@ -22,9 +22,13 @@ module CranCrawler
 
         name = package.fetch('Package', :default_value)
         version = package.fetch('Version', :default_value)
-        unless store.package_indexed?(name)
+        next if store.package_indexed?(name)
+
+        begin
           package_details = crawler.retrieve_package_details(name, version)
           store.persist_package(package_details.first)
+        ensure
+          store.mark_package_as_not_indexed(name)
         end
       end
     end

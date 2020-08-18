@@ -14,5 +14,6 @@ group :test do
   gem 'cucumber'
   gem 'database_cleaner'
   gem 'factory_girl'
+  gem 'simplecov'
   gem 'vcr'
 end

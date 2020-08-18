@@ -12,10 +12,10 @@ require 'cran_crawler/package_info_tokenizer'
 
 class Store
   def persist_packages(packages)
-    packages = packages.uniq { |record| [record[:Package]] }
+    packages = packages.uniq { |p| [p['Package']] }
     records = packages.map do |p|
-      { name: p.fetch('Package', :default_value),
-        checksum: p.fetch('Md5sum', :default_value),
+      { name: p.fetch('Package'),
+        checksum: p.fetch('Md5sum'),
         updated_at: Time.now }
     end
     Package.upsert_all(records, returning: false, unique_by: :name)
@@ -25,10 +25,14 @@ class Store
     Package.where(name: name).pluck(:indexed).first
   end
 
+  def mark_package_as_not_indexed(name)
+    Package.where(name: name).first.update(indexed: false)
+  end
+
   def persist_package(package)
     # 'Type' is not always present
-    # return if package.fetch('Type', :default_value) != 'Package'
-    tokenizer = PackageInfoTokenizer.new(package.fetch('Depends', :default_value))
+    # return if package.fetch('Type') != 'Package'
+    tokenizer = PackageInfoTokenizer.new(package.fetch('Depends'))
     result = tokenizer.process
     version_id = persist_version(result['r_version'], package)
     persist_dependencies(result['packages'], version_id)
@@ -40,13 +44,13 @@ class Store
   private
 
   def handle_suggestions(package, version_id)
-    tokenizer = PackageInfoTokenizer.new(package.fetch('Suggests', :default_value))
+    tokenizer = PackageInfoTokenizer.new(package.fetch('Suggests'))
     package_info = tokenizer.process
     persist_suggestions(package_info['packages'], version_id)
   end
 
   def handle_authors(package, version_id)
-    tokenizer = UserInfoTokenizer.new(package.fetch('Author', :default_value))
+    tokenizer = UserInfoTokenizer.new(package.fetch('Author'))
     tokenizer.process.each do |r|
       user_id = persist_user(r['name'], r['email'])
       persist_author(user_id, version_id)
@@ -54,7 +58,7 @@ class Store
   end
 
   def handle_maintainers(package, version_id)
-    tokenizer = UserInfoTokenizer.new(package.fetch('Maintainer', :default_value))
+    tokenizer = UserInfoTokenizer.new(package.fetch('Maintainer'))
     tokenizer.process.each do |r|
       user_id = persist_user(r['name'], r['email'])
       persist_maintainer(user_id, version_id)
@@ -82,14 +86,14 @@ class Store
   def persist_version(r_version, package)
     Version.upsert(
       {
-        number: package.fetch('Version', :default_value),
-        title: package.fetch('Title', :default_value),
-        description: package.fetch('Description', :default_value),
-        license: package.fetch('License', :default_value),
+        number: package.fetch('Version'),
+        title: package.fetch('Title'),
+        description: package.fetch('Description'),
+        license: package.fetch('License'),
         r_version: r_version,
-        published_at: package.fetch('Date/publication', :default_value),
+        published_at: package.fetch('Date/publication'),
         updated_at: Time.now,
-        package_id: Package.where(name: package.fetch('Package', :default_value)).first.id
+        package_id: Package.where(name: package.fetch('Package')).first.id
       }, returning: %w[id], unique_by: :index_versions_on_number_and_package_id
     ).first.id
   end
