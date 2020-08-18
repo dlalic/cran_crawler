@@ -27,7 +27,10 @@ ActiveRecord::Schema.define(version: 2020_08_17_110239) do
   create_table "dependencies", force: :cascade do |t|
     t.date "updated_at"
     t.bigint "package_id", null: false
-    t.index ["package_id"], name: "index_dependencies_on_package_id", unique: true
+    t.bigint "version_id", null: false
+    t.index ["package_id", "version_id"], name: "index_dependencies_on_package_id_and_version_id", unique: true
+    t.index ["package_id"], name: "index_dependencies_on_package_id"
+    t.index ["version_id"], name: "index_dependencies_on_version_id"
   end
 
   create_table "maintainers", force: :cascade do |t|
@@ -50,7 +53,10 @@ ActiveRecord::Schema.define(version: 2020_08_17_110239) do
   create_table "suggestions", force: :cascade do |t|
     t.date "updated_at"
     t.bigint "package_id", null: false
-    t.index ["package_id"], name: "index_suggestions_on_package_id", unique: true
+    t.bigint "version_id", null: false
+    t.index ["package_id", "version_id"], name: "index_suggestions_on_package_id_and_version_id", unique: true
+    t.index ["package_id"], name: "index_suggestions_on_package_id"
+    t.index ["version_id"], name: "index_suggestions_on_version_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -76,8 +82,10 @@ ActiveRecord::Schema.define(version: 2020_08_17_110239) do
   add_foreign_key "authors", "users", on_delete: :cascade
   add_foreign_key "authors", "versions", on_delete: :cascade
   add_foreign_key "dependencies", "packages", on_delete: :cascade
+  add_foreign_key "dependencies", "versions", on_delete: :cascade
   add_foreign_key "maintainers", "users", on_delete: :cascade
   add_foreign_key "maintainers", "versions", on_delete: :cascade
   add_foreign_key "suggestions", "packages", on_delete: :cascade
+  add_foreign_key "suggestions", "versions", on_delete: :cascade
   add_foreign_key "versions", "packages", on_delete: :cascade
 end

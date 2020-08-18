@@ -24,13 +24,12 @@ RSpec.describe Crawler do
     VCR.use_cassette('package') do
       crawler = Crawler.new
       result = crawler.retrieve_package_details('A3', '1.0.0')
+      # Author and Maintainer is omitted to obfuscate real people's names and emails
       expected = { 'Package' => 'A3',
                    'Type' => 'Package',
                    'Title' => "Accurate, Adaptable, and Accessible Error Metrics for Predictive\n       Models\n",
                    'Version' => '1.0.0',
                    'Date' => '2015-08-15',
-                   'Author' => 'Scott Fortmann-Roe',
-                   'Maintainer' => 'Scott Fortmann-Roe <scottfr@berkeley.edu>',
                    'Description' => 'Supplies tools for tabulating and analyzing the results of predictive models. The methods employed are applicable to virtually any predictive model and make comparisons between different methodologies straightforward.',
                    'License' => 'GPL (>= 2)',
                    'Depends' => 'R (>= 2.15.0), xtable, pbapply',
