@@ -17,7 +17,9 @@ module CranCrawler
       packages = crawler.retrieve_all_packages
       store = Store.new
       store.persist_packages(packages)
-      packages.each do |package|
+      packages.each_with_index do |package, index|
+        break if ENV['CUCUMBER'] && index > 0
+
         package_details = crawler.retrieve_package_details(package.fetch('Package'), package.fetch('Version'))
         store.persist_package(package_details.first)
       end
