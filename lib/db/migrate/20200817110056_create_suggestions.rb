@@ -3,10 +3,8 @@
 class CreateSuggestions < ActiveRecord::Migration[6.0]
   def change
     create_table :suggestions do |t|
-      t.timestamps
-      t.references :package, null: false
-      t.references :version, null: false
-      t.index %i[package_id version_id], unique: true
+      t.date :updated_at
+      t.references :package, null: false, foreign_key: { on_delete: :cascade }
     end
   end
 end

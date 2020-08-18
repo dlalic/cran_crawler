@@ -3,9 +3,9 @@
 class CreateAuthors < ActiveRecord::Migration[6.0]
   def change
     create_table :authors do |t|
-      t.timestamps
-      t.references :user, null: false
-      t.references :version, null: false
+      t.date :updated_at
+      t.references :user, null: false, foreign_key: { on_delete: :cascade }
+      t.references :version, null: false, foreign_key: { on_delete: :cascade }
       t.index %i[user_id version_id], unique: true
     end
   end

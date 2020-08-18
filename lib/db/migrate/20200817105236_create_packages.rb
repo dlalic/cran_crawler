@@ -6,7 +6,7 @@ class CreatePackages < ActiveRecord::Migration[6.0]
       t.string :name, null: false
       t.string :checksum
       t.boolean :indexed, default: false, null: false
-      t.timestamps
+      t.date :updated_at
       t.index :name, unique: true
     end
   end

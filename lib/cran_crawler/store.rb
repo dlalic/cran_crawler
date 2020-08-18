@@ -50,7 +50,6 @@ class Store
         license: package.fetch('License'),
         r_version: r_version.to_s,
         published_at: package.fetch('Date/publication'),
-        created_at: Time.now,
         updated_at: Time.now,
         package_id: Package.where(['name = ?', package.fetch('Package')]).first.id
       }, returning: %w[id], unique_by: :index_versions_on_number_and_package_id
@@ -62,7 +61,6 @@ class Store
       {
         name: name,
         email: email,
-        created_at: Time.now,
         updated_at: Time.now
       }, returning: %w[id], unique_by: :index_users_on_name
     ).first.fetch('id', :default_value)
@@ -73,7 +71,6 @@ class Store
       {
         user_id: user_id,
         version_id: version_id,
-        created_at: Time.now,
         updated_at: Time.now
       }, unique_by: %i[user_id version_id]
     ).first.fetch('id', :default_value)
@@ -84,7 +81,6 @@ class Store
       {
         user_id: user_id,
         version_id: version_id,
-        created_at: Time.now,
         updated_at: Time.now
       }, unique_by: %i[user_id version_id]
     ).first.fetch('id', :default_value)

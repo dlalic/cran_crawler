@@ -5,7 +5,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
     create_table :users do |t|
       t.string :name, null: false
       t.string :email
-      t.timestamps
+      t.date :updated_at
       t.index :name, unique: true
     end
   end
