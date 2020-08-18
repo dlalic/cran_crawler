@@ -10,7 +10,7 @@ RSpec.describe UserInfoTokenizer do
     expected = { 'name' => 'Foo Bar Baz',
                  'email' => 'foo@gmail.com' }
     expected.keys.each do |k|
-      expect(result[0][k]).to eq(expected[k])
+      expect(result.first[k]).to eq(expected[k])
     end
   end
 
@@ -21,7 +21,7 @@ RSpec.describe UserInfoTokenizer do
     expected = { 'name' => 'Foo Bar Baz',
                  'email' => nil }
     expected.keys.each do |k|
-      expect(result[0][k]).to eq(expected[k])
+      expect(result.first[k]).to eq(expected[k])
     end
   end
 
@@ -32,7 +32,7 @@ RSpec.describe UserInfoTokenizer do
     expected = { 'name' => 'Foo Bar Baz',
                  'email' => nil }
     expected.keys.each do |k|
-      expect(result[0][k]).to eq(expected[k])
+      expect(result.first[k]).to eq(expected[k])
     end
   end
 

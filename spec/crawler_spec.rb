@@ -15,7 +15,7 @@ RSpec.describe Crawler do
                    'Suggests' => 'randomForest, e1071',
                    'Version' => '1.0.0' }
       expected.keys.each do |k|
-        expect(result[0][k]).to eq(expected[k])
+        expect(result.first[k]).to eq(expected[k])
       end
     end
   end
@@ -40,7 +40,7 @@ RSpec.describe Crawler do
                    'Repository' => 'CRAN',
                    'Date/publication' => '2015-08-16 23:05:52' }
       expected.keys.each do |k|
-        expect(result[0][k]).to eq(expected[k])
+        expect(result.first[k]).to eq(expected[k])
       end
     end
   end
