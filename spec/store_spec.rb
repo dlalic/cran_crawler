@@ -2,10 +2,10 @@
 
 require 'rspec'
 
-describe 'Store' do
+RSpec.describe Store do
   context 'data is correct' do
     it 'succeeds' do
-      pending 'Not implemented'
+      # TODO
     end
   end
 end
