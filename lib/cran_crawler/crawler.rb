@@ -3,12 +3,11 @@
 require 'minitar'
 require 'deb822/parser'
 require 'openapi_client'
-require 'set'
 
 class Crawler
-  def initialize(api_instance = OpenapiClient::DefaultApi.new, logger = Logger.new(STDOUT))
-    @api_instance = api_instance
+  def initialize(logger = Logger.new(STDOUT), api_instance = OpenapiClient::DefaultApi.new)
     @logger = logger
+    @api_instance = api_instance
   end
 
   def retrieve_all_packages
@@ -49,7 +48,6 @@ class Crawler
 
   def parse_deb822(input)
     parser = Deb822::Parser.new(input)
-    # Set because there seem to be packages with same name and same version
-    parser.paragraphs.to_set
+    parser.paragraphs.to_a
   end
 end

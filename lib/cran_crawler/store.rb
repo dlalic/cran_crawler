@@ -11,8 +11,11 @@ require 'cran_crawler/user_info_tokenizer'
 require 'cran_crawler/package_info_tokenizer'
 
 class Store
+  def initialize(logger = Logger.new(STDOUT))
+    @logger = logger
+  end
+
   def persist_packages(packages)
-    packages = packages.uniq { |p| [p['Package']] }
     records = packages.map do |p|
       { name: p.fetch('Package'),
         checksum: p.fetch('Md5sum'),
@@ -31,9 +34,9 @@ class Store
 
   def persist_package(package)
     # 'Type' is not always present
-    # return if package.fetch('Type') != 'Package'
-    tokenizer = PackageInfoTokenizer.new(package.fetch('Depends'))
-    result = tokenizer.process
+    return if package.fetch('Type', nil) != 'Package'
+
+    result = parse_dependencies(package)
     version_id = persist_version(result['r_version'], package)
     persist_dependencies(result['packages'], version_id)
     handle_suggestions(package, version_id)
@@ -43,10 +46,21 @@ class Store
 
   private
 
+  def parse_dependencies(package)
+    depends = package.fetch('Depends', nil)
+    return { 'r_version' => nil, 'packages' => [] } if depends.nil?
+
+    tokenizer = PackageInfoTokenizer.new(depends)
+    tokenizer.process
+  end
+
   def handle_suggestions(package, version_id)
-    tokenizer = PackageInfoTokenizer.new(package.fetch('Suggests'))
-    package_info = tokenizer.process
-    persist_suggestions(package_info['packages'], version_id)
+    suggests = package.fetch('Suggests', nil)
+    return if suggests.nil?
+
+    tokenizer = PackageInfoTokenizer.new(suggests)
+    result = tokenizer.process
+    persist_suggestions(result['packages'], version_id)
   end
 
   def handle_authors(package, version_id)
@@ -67,20 +81,20 @@ class Store
 
   def persist_dependencies(packages, version_id)
     packages = packages.map do |p|
-      { package_id: Package.where(name: p).first.id,
+      { package_id: Package.find_or_create_by(name: p).id,
         version_id: version_id,
         updated_at: Time.now }
     end
-    Dependency.upsert_all(packages, unique_by: :index_dependencies_on_package_id_and_version_id)
+    Dependency.upsert_all(packages, unique_by: :index_dependencies_on_package_id_and_version_id) unless packages.empty?
   end
 
   def persist_suggestions(packages, version_id)
     packages = packages.map do |p|
-      { package_id: Package.where(name: p).first.id,
+      { package_id: Package.find_or_create_by(name: p).id,
         version_id: version_id,
         updated_at: Time.now }
     end
-    Suggestion.upsert_all(packages, unique_by: :index_suggestions_on_package_id_and_version_id)
+    Suggestion.upsert_all(packages, unique_by: :index_suggestions_on_package_id_and_version_id) unless packages.empty?
   end
 
   def persist_version(r_version, package)
@@ -93,9 +107,9 @@ class Store
         r_version: r_version,
         published_at: package.fetch('Date/publication'),
         updated_at: Time.now,
-        package_id: Package.where(name: package.fetch('Package')).first.id
+        package_id: Package.find_or_create_by(name: package.fetch('Package')).id
       }, returning: %w[id], unique_by: :index_versions_on_number_and_package_id
-    ).first.id
+    ).first.fetch('id')
   end
 
   def persist_user(name, email = nil)
@@ -105,7 +119,7 @@ class Store
         email: email,
         updated_at: Time.now
       }, returning: %w[id], unique_by: :index_users_on_name
-    ).first.id
+    ).first.fetch('id')
   end
 
   def persist_author(user_id, version_id)
@@ -115,7 +129,7 @@ class Store
         version_id: version_id,
         updated_at: Time.now
       }, unique_by: %i[user_id version_id]
-    ).first.id
+    ).first.fetch('id')
   end
 
   def persist_maintainer(user_id, version_id)
@@ -125,6 +139,6 @@ class Store
         version_id: version_id,
         updated_at: Time.now
       }, unique_by: %i[user_id version_id]
-    ).first.id
+    ).first.fetch('id')
   end
 end

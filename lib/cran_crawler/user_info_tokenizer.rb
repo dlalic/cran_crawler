@@ -6,14 +6,25 @@ class UserInfoTokenizer
   end
 
   def process
-    @input.lines.map do |line|
-      name = line.gsub(/\[(.*)\]/, '')
-      name = name.chomp.sub(' ,', '')
-      email = line[/\<(.*?)\>/m, 1]
-      name = name.sub(email, '').sub(' <>', '') unless email.nil?
-      name = name.delete_prefix(' ')
-      name = name.delete_suffix(' ')
-      { 'email' => email, 'name' => name }
+    if @input.lines.count == 1
+      sanitized = @input.gsub(/\[(.*)\]/, '')
+      sanitized.split(',').map(&method(:process_item))
+    else
+      @input.lines.map(&method(:process_item))
     end
+  end
+
+  private
+
+  def process_item(item)
+    item = item.gsub(/\(\<http(.*)\>\)/, '')
+    name = item.gsub(/\[(.*)\]/, '')
+    name = name.chomp.sub(' ,', '')
+    email = item[/\<(.*?)\>/m, 1]
+    name = name.sub(email, '').sub(' <>', '') unless email.nil?
+    name = name.delete_prefix(' ')
+    name = name.delete_suffix(',')
+    name = name.delete_suffix(' ') while name.end_with?(' ')
+    { 'email' => email, 'name' => name }
   end
 end
