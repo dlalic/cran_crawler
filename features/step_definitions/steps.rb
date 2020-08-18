@@ -34,3 +34,8 @@ Then(/^the database should contain info about the package "([^"]*)"$/) do |arg|
   expect(maintainers.first.name).not_to be_nil
   expect(maintainers.first.email).not_to be_nil
 end
+
+Then(/^The package "([^"]*)" should be indexed$/) do |arg|
+  package = Package.find_by(name: arg)
+  expect(package.indexed).to eq(true)
+end

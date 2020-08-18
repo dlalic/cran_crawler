@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'activerecord-import'
 require 'cran_crawler/models/package'
 require 'cran_crawler/models/version'
 require 'cran_crawler/models/user'
@@ -10,16 +9,20 @@ require 'cran_crawler/models/dependency'
 require 'cran_crawler/models/suggestion'
 require 'cran_crawler/user_info_tokenizer'
 require 'cran_crawler/package_info_tokenizer'
-require 'semantic'
 
 class Store
   def persist_packages(packages)
-    records = packages.map { |package| Package.new(name: package.fetch('Package'), checksum: package.fetch('Md5sum')) }
-    Package.import records, batch_size: 1000, on_duplicate_key_update: { conflict_target: [:name], columns: [:checksum] }
+    records = packages.map do |p|
+      { name: p.fetch('Package', :default_value),
+        checksum: p.fetch('Md5sum', :default_value),
+        updated_at: Time.now }
+    end
+    records = records.uniq { |f| [f[:name]] }
+    Package.upsert_all(records, returning: false, unique_by: :name)
   end
 
-  def all_packages
-    Package.all.where(indexed: false)
+  def packages(indexed = false)
+    Package.all.where(indexed: indexed)
   end
 
   def persist_package(package)

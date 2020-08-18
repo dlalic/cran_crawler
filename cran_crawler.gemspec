@@ -22,9 +22,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activerecord'
-  spec.add_dependency 'activerecord-import'
   spec.add_dependency 'deb822'
   spec.add_dependency 'pg'
-  spec.add_dependency 'semantic'
   spec.add_dependency 'thor'
 end

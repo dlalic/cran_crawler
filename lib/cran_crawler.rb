@@ -18,8 +18,9 @@ module CranCrawler
       store = Store.new
       store.persist_packages(packages)
       packages.each_with_index do |package, index|
-        break if ENV['CUCUMBER'] && index > 0
+        break if ENV['CUCUMBER'] && index.positive?
 
+        # TODO: compare checksums
         package_details = crawler.retrieve_package_details(package.fetch('Package'), package.fetch('Version'))
         store.persist_package(package_details.first)
       end
