@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'openapi_client', '~> 1.0.0', path: './openapi'
-gem 'rake', '~> 12.0'
+gem 'rake', '~> 13.0'
 gem 'rspec', '~> 3.0'
 gem 'standalone_migrations', '~> 6.0'
 
