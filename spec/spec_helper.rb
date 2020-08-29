@@ -4,6 +4,7 @@ require 'bundler/setup'
 require 'cran_crawler'
 require 'typhoeus'
 require 'vcr'
+require 'faker'
 
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/cassettes'
