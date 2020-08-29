@@ -11,9 +11,8 @@ gem 'rspec', '~> 3.0'
 gem 'standalone_migrations', '~> 6.0'
 
 group :test do
-  gem 'cucumber'
-  gem 'database_cleaner'
-  gem 'factory_girl'
-  gem 'simplecov'
-  gem 'vcr'
+  gem 'cucumber', '~> 5.1'
+  gem 'factory_bot', '~> 6.1'
+  gem 'simplecov', '~> 0.19'
+  gem 'vcr', '~> 6.0'
 end
