@@ -11,7 +11,7 @@ gem 'rspec', '~> 3.10'
 gem 'standalone_migrations', '~> 6.0'
 
 group :test do
-  gem 'cucumber', '~> 5.2'
+  gem 'cucumber', '~> 5.3'
   gem 'faker', '~> 2.15'
   gem 'simplecov', '~> 0.21'
   gem 'vcr', '~> 6.0'
