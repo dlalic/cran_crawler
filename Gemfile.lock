@@ -83,7 +83,7 @@ GEM
     erubi (1.10.0)
     ethon (0.12.0)
       ffi (>= 1.3.0)
-    faker (2.17.0)
+    faker (2.18.0)
       i18n (>= 1.6, < 2)
     ffi (1.15.0)
     i18n (1.8.10)
@@ -166,7 +166,7 @@ PLATFORMS
 DEPENDENCIES
   cran_crawler!
   cucumber (~> 6.0)
-  faker (~> 2.17)
+  faker (~> 2.18)
   openapi_client (~> 1.0.0)!
   rake (~> 13.0)
   rspec (~> 3.10)
