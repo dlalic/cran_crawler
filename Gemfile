@@ -8,7 +8,7 @@ gemspec
 gem 'openapi_client', '~> 1.0.0', path: './openapi'
 gem 'rake', '~> 13.0'
 gem 'rspec', '~> 3.11'
-gem 'standalone_migrations', '~> 6.0'
+gem 'standalone_migrations', '~> 6.1'
 
 group :test do
   gem 'cucumber', '~> 7.1'
