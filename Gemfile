@@ -12,7 +12,7 @@ gem 'standalone_migrations', '~> 7.1'
 
 group :test do
   gem 'cucumber', '~> 7.1'
-  gem 'faker', '~> 2.20'
+  gem 'faker', '~> 2.21'
   gem 'simplecov', '~> 0.21'
   gem 'vcr', '~> 6.1'
 end
