@@ -95,7 +95,7 @@ GEM
     nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    pg (1.4.6)
+    pg (1.5.1)
     racc (1.6.2)
     rack (2.2.6.4)
     rack-test (2.1.0)
